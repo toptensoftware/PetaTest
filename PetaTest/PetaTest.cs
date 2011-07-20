@@ -184,12 +184,12 @@ namespace PetaTest
 
 		public static void IsEmpty(System.Collections.IEnumerable collection)
 		{
-			Throw(collection!=null && collection.Cast<object>().Count() == 0, () => string.Format("Collection is not empty\n  Items: {0}", Utils.FormatValue(collection)));
+			Throw(collection != null && collection.Cast<object>().Count() == 0, () => string.Format("Collection is not empty\n  Items: {0}", Utils.FormatValue(collection)));
 		}
 
 		public static void IsNotEmpty(System.Collections.IEnumerable collection)
 		{
-			Throw(collection!=null && collection.Cast<object>().Count() != 0, () => "Collection is empty");
+			Throw(collection != null && collection.Cast<object>().Count() != 0, () => "Collection is empty");
 		}
 
 		public static void Contains(System.Collections.IEnumerable collection, object item)
@@ -373,7 +373,7 @@ namespace PetaTest
 		{
 			var e1 = a.GetEnumerator();
 			var e2 = b.GetEnumerator();
-			int index=0;
+			int index = 0;
 			while (true)
 			{
 				bool have1 = e1.MoveNext();
@@ -396,9 +396,9 @@ namespace PetaTest
 			int index = 0;
 			foreach (object o in coll)
 			{
-				if (o==null || o.GetType() != t)
+				if (o == null || o.GetType() != t)
 				{
-					throw new AssertionException(string.Format("Collection item at index {0} is of the wrong type, expected {1} but found {2}", index, t.FullName, o==null ? "null" : o.GetType().FullName));
+					throw new AssertionException(string.Format("Collection item at index {0} is of the wrong type, expected {1} but found {2}", index, t.FullName, o == null ? "null" : o.GetType().FullName));
 				}
 				index++;
 			}
@@ -801,7 +801,7 @@ namespace PetaTest
 			foreach (var f in st.GetFrames())
 			{
 				if (f.GetMethod().GetCustomAttributes(typeof(SkipInStackTraceAttribute), false).Length != 0 ||
-					f.GetMethod().DeclaringType.GetCustomAttributes(typeof(SkipInStackTraceAttribute), false).Length != 0 ||
+					(f.GetMethod().DeclaringType != null && f.GetMethod().DeclaringType.GetCustomAttributes(typeof(SkipInStackTraceAttribute), false).Length != 0) ||
 					f.GetFileName() == null)
 					continue;
 
