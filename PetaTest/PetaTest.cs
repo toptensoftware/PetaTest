@@ -151,15 +151,20 @@ namespace PetaTest
 			AreNotEqual(a, b, () => Object.Equals(a, b));
 		}
 
-		public static void AreEqual(string a, string b)
+		public static void AreEqual(string a, string b, bool ignoreCase = false)
 		{
-			Throw(string.Compare(a, b) == 0, () =>
+			Throw(string.Compare(a, b, ignoreCase) == 0, () =>
 			{
-				var offset = Utils.CountCommonPrefix(a, b);
+				var offset = Utils.CountCommonPrefix(a, b, ignoreCase);
 				var xa = Utils.FormatValue(Utils.GetStringExtract(a, offset));
 				var xb = Utils.FormatValue(Utils.GetStringExtract(b, offset));
-				return string.Format("Strings are not equal at offset {0}\n  lhs: {1}\n  rhs: {2}\n{3}^", offset, xa, xb, new string(' ', Utils.CountCommonPrefix(xa, xb) + 7));
+				return string.Format("Strings are not equal at offset {0}\n  lhs: {1}\n  rhs: {2}\n{3}^", offset, xa, xb, new string(' ', Utils.CountCommonPrefix(xa, xb, ignoreCase) + 7));
 			});
+		}
+
+		public static void AreNotEqual(string a, string b, bool ignoreCase = false)
+		{
+			Throw(string.Compare(a, b, ignoreCase) != 0, () => string.Format("Strings are not equal\n  lhs: {0}\n  rhs: {1}", Utils.FormatValue(a), Utils.FormatValue(b)));
 		}
 
 		public static void IsEmpty(string val)
@@ -200,6 +205,18 @@ namespace PetaTest
 		public static void DoesNotContain(System.Collections.IEnumerable collection, object item)
 		{
 			Throw(!collection.Cast<object>().Contains(item), () => string.Format("Collection does contain {0}", Utils.FormatValue(item)));
+		}
+
+		public static void Contains(string str, string contains, bool ignoreCase = false)
+		{
+			Throw(str.IndexOf(contains, ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture) >= 0,
+				() => string.Format("String doesn't contain substring\n  expected: {0}\n  found:    {1}", Utils.FormatValue(contains), Utils.FormatValue(str)));
+		}
+
+		public static void DoesNotContain(string str, string contains, bool ignoreCase = false)
+		{
+			Throw(str.IndexOf(contains, ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture) < 0,
+				() => string.Format("String does contain substring\n  didn't expect: {0}\n  found:         {1}", Utils.FormatValue(contains), Utils.FormatValue(str)));
 		}
 
 		public static void IsNull(object val)
@@ -295,7 +312,7 @@ namespace PetaTest
 			IsNotAssignableTo(typeof(T), o);
 		}
 
-		public static void Throws(Type t, Action code)
+		public static Exception Throws(Type t, Action code)
 		{
 			try
 			{
@@ -304,14 +321,14 @@ namespace PetaTest
 			catch (Exception x)
 			{
 				Throw(t.IsAssignableFrom(x.GetType()), () => string.Format("Wrong exception type caught, expected {0} received {1}", t.FullName, Utils.FormatValue(x)));
-				return;
+				return x;
 			}
 			throw new AssertionException(string.Format("Failed to throw exception of type {0}", t.FullName));
 		}
 
-		public static void Throws<TX>(Action code)
+		public static TX Throws<TX>(Action code) where TX : Exception
 		{
-			Throws(typeof(TX), code);
+			return (TX)Throws(typeof(TX), code);
 		}
 
 		public static void DoesNotThrow(Action code)
@@ -884,10 +901,10 @@ namespace PetaTest
 			return null;
 		}
 
-		public static int CountCommonPrefix(string a, string b)
+		public static int CountCommonPrefix(string a, string b, bool IgnoreCase)
 		{
 			int i = 0;
-			while (i < Math.Min(a.Length, b.Length) && a[i] == b[i])
+			while (i < Math.Min(a.Length, b.Length) && (IgnoreCase ? (char.ToUpperInvariant(a[i]) == char.ToUpperInvariant(b[i])) : (a[i] == b[i])))
 				i++;
 			return i;
 		}
