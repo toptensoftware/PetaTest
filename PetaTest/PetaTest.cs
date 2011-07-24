@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Linq.Expressions;
 using System.IO;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace PetaTest
 {
@@ -217,6 +218,16 @@ namespace PetaTest
 		{
 			Throw(str.IndexOf(contains, ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture) < 0,
 				() => string.Format("String does contain substring\n  didn't expect: {0}\n  found:         {1}", Utils.FormatValue(contains), Utils.FormatValue(str)));
+		}
+
+		public static void Matches(string str, string regex, RegexOptions options = RegexOptions.None)
+		{
+			Throw(new Regex(regex, options).IsMatch(str), () => string.Format("String doesn't match expression\n  regex: \"{0}\"\n  found: {1}", regex, Utils.FormatValue(str)));
+		}
+
+		public static void DoesNotMatch(string str, string regex, RegexOptions options = RegexOptions.None)
+		{
+			Throw(!(new Regex(regex, options).IsMatch(str)), () => string.Format("String matches expression\n  regex: \"{0}\"\n  found: {1}", regex, Utils.FormatValue(str)));
 		}
 
 		public static void IsNull(object val)
@@ -703,6 +714,8 @@ namespace PetaTest
 				Stats.Elapsed = sw.ElapsedMilliseconds;
 				Stats.Passed++;
 			}
+			
+			
 			catch (Exception x)
 			{
 				Stats.Elapsed = sw.ElapsedMilliseconds;
