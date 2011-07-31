@@ -36,12 +36,20 @@ namespace PetaTest
 		public string Source { get; set; }
 		public bool Active { get; set; }
 
-		public virtual IEnumerable<object[]> GetArguments(Type owningType)
+		public virtual IEnumerable<object[]> GetArguments(Type owningType, object testFixtureInstance)
 		{
 			if (Source != null)
 			{
-				var iter_method = owningType.GetMethod(Source, BindingFlags.Static | BindingFlags.Public);
-				return (IEnumerable<object[]>)iter_method.Invoke(null, null);
+				if (testFixtureInstance != null)
+				{
+					var iter_method = owningType.GetMethod(Source, BindingFlags.Instance | BindingFlags.Public);
+					return (IEnumerable<object[]>)iter_method.Invoke(testFixtureInstance, null);
+				}
+				else
+				{
+					var iter_method = owningType.GetMethod(Source, BindingFlags.Static | BindingFlags.Public);
+					return (IEnumerable<object[]>)iter_method.Invoke(null, null);
+				}
 			}
 			else
 			{
@@ -163,6 +171,11 @@ namespace PetaTest
 			});
 		}
 
+		public static void AreEqual(string a, string b)
+		{
+			AreEqual(a, b, false);
+		}
+
 		public static void AreNotEqual(string a, string b, bool ignoreCase = false)
 		{
 			Throw(string.Compare(a, b, ignoreCase) != 0, () => string.Format("Strings are not equal\n  lhs: {0}\n  rhs: {1}", Utils.FormatValue(a), Utils.FormatValue(b)));
@@ -208,10 +221,15 @@ namespace PetaTest
 			Throw(!collection.Cast<object>().Contains(item), () => string.Format("Collection does contain {0}", Utils.FormatValue(item)));
 		}
 
-		public static void Contains(string str, string contains, bool ignoreCase = false)
+		public static void Contains(string str, string contains, bool ignoreCase)
 		{
 			Throw(str.IndexOf(contains, ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture) >= 0,
 				() => string.Format("String doesn't contain substring\n  expected: {0}\n  found:    {1}", Utils.FormatValue(contains), Utils.FormatValue(str)));
+		}
+
+		public static void Contains(string str, string contains)
+		{
+			Contains(str, contains, false);
 		}
 
 		public static void DoesNotContain(string str, string contains, bool ignoreCase = false)
@@ -552,6 +570,7 @@ namespace PetaTest
 			bool? htmlreport = null;
 			bool? dirtyexit = null;
 			bool? runall = null;
+			bool? verbose = null;
 			string output_file = null;
 			foreach (var a in args)
 			{
@@ -566,6 +585,7 @@ namespace PetaTest
 						case "htmlreport": htmlreport = BoolFromString(val) ?? true; break;
 						case "dirtyexit": dirtyexit = BoolFromString(val) ?? true; break;
 						case "runall": runall = BoolFromString(val) ?? true; break;
+						case "verbose": verbose = BoolFromString(val) ?? false; break;
 						case "out": output_file = val; break;
 						default:
 							Console.WriteLine("Warning: Unknown switch '{0}' ignored", a);
@@ -578,6 +598,8 @@ namespace PetaTest
 				Output = new HtmlResultsWriter(showreport, output_file);
 			else
 				Output = new PlainTextResultsWriter(output_file == null ? null : new StreamWriter(output_file));
+
+			Output.Verbose = verbose ?? false;
 
 			var totalTime = Stopwatch.StartNew();
 
@@ -641,7 +663,7 @@ namespace PetaTest
 					bool runAllTestFixturesInstances = RunAll || !t.IsActive();
 					bool runAllTestMethods = RunAll || !t.HasActiveMethods();
 					foreach (TestFixtureAttribute tfa in t.GetCustomAttributes(typeof(TestFixtureAttribute), false).Where(x => runAllTestFixturesInstances || ((TestFixtureAttribute)x).Active))
-						foreach (var args in tfa.GetArguments(t))
+						foreach (var args in tfa.GetArguments(t, null))
 							RunInternal(t, null, args, runAllTestMethods);
 				}
 				else
@@ -675,7 +697,7 @@ namespace PetaTest
 					if (arguments == null)
 					{
 						foreach (TestAttribute i in method.GetCustomAttributes(typeof(TestAttribute), false).Where(x => RunAll || ((TestAttribute)x).Active))
-							foreach (var args in i.GetArguments(method.DeclaringType))
+							foreach (var args in i.GetArguments(method.DeclaringType, instance))
 							{
 								if (args.Length != method.GetParameters().Length)
 								{
@@ -714,8 +736,8 @@ namespace PetaTest
 				Stats.Elapsed = sw.ElapsedMilliseconds;
 				Stats.Passed++;
 			}
-			
-			
+
+
 			catch (Exception x)
 			{
 				Stats.Elapsed = sw.ElapsedMilliseconds;
@@ -965,6 +987,7 @@ namespace PetaTest
 	// Base class for result writers
 	public abstract class ResultsWriter : TextWriter
 	{
+		public bool Verbose;
 		public abstract void StartTest(object Target, object[] Arguments);
 		public abstract void EndTest(Stats stats);
 		public virtual void Complete(Stats stats, long OtherTimes, long ActualTime)
@@ -996,12 +1019,12 @@ namespace PetaTest
 		public override void StartTest(object Target, object[] Arguments)
 		{
 			WriteIndented(string.Format("{0}{1}\n", Utils.FormatTarget(Target), Utils.FormatArguments(Arguments)));
-			_indentDepth++;
+			_indentDepth += (Target as MethodBase) != null ? 2 : 1;
 		}
 
 		public override void EndTest(Stats stats)
 		{
-			_indentDepth--;
+			_indentDepth -= (stats.Target as MethodBase) != null ? 2 : 1;
 		}
 
 		public override void Complete(Stats stats, long OtherTimes, long ActualTime)
@@ -1030,7 +1053,8 @@ namespace PetaTest
 
 		public override void Write(string str)
 		{
-			WriteIndented(str);
+			if (Verbose)
+				WriteIndented(str);
 		}
 
 		public void WriteIndented(string str)
@@ -1107,6 +1131,7 @@ namespace PetaTest
 		Tag _current;
 		Tag _pre;
 		DateTime _dateOfTest;
+		StringWriter _bufferedOutput;
 
 		public override void StartTest(object Target, object[] Arguments)
 		{
@@ -1150,6 +1175,7 @@ namespace PetaTest
 			_current.Append(divTest);
 			_current = divContent;
 			_pre = null;
+			_bufferedOutput = Verbose ? null : new StringWriter();
 
 			base.StartTest(Target, Arguments);
 		}
@@ -1161,6 +1187,8 @@ namespace PetaTest
 			// If this was a test, and it passed, write something to indicate that
 			if (stats.Target as MethodInfo != null && stats.Passed == 1)
 			{
+				if (_pre != null)
+					WriteToTestOutput("\n");
 				WriteToTestOutput("Test passed!\n");
 				_current.Parent.Find("div", "title", null).Append(string.Format(" <small>{0}ms</small>", stats.Elapsed));
 			}
@@ -1206,9 +1234,9 @@ namespace PetaTest
 				System.GC.Collect();
 				try
 				{
-					base.Write("View Report?");
+					base.WriteIndented("View Report?");
 					var key = Console.ReadKey();
-					base.WriteLine();
+					base.WriteIndented("\n");
 					_showreport = key.KeyChar == 'Y' || key.KeyChar == 'y';
 				}
 				catch
@@ -1238,10 +1266,18 @@ namespace PetaTest
 		{
 			base.Write(str);
 			WriteToTestOutput(str);
+			if (_bufferedOutput != null)
+				_bufferedOutput.Write(str);
 		}
 
 		public override void WriteException(Exception x)
 		{
+			if (_bufferedOutput != null)
+			{
+				WriteIndented(_bufferedOutput.ToString());
+				_bufferedOutput = new StringWriter();
+			}
+
 			base.WriteException(x);
 
 			// Split exception message into title and detail
