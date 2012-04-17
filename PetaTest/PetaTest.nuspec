@@ -3,7 +3,7 @@
 	<metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 		<id>PetaTest</id>
 		<title>PetaTest - A tiny unit testing thing for your peace of mind</title>
-		<version>0.1.0</version>
+		<version>0.1.1</version>
 		<authors>Topten Software</authors>
 		<owners>Topten Software</owners>
 		<licenseUrl>http://www.toptensoftware.com/petatest/license</licenseUrl>
@@ -18,7 +18,7 @@
 
 			Supplied as a single .cs file with no additional dependencies other than what's in the GAC.
 		</description>
-		<tags>Twitter</tags>
+		<tags>Unit Testing NUnit Alternative</tags>
 	</metadata>
 	<files>
 		<file src="PetaTest.cs" target="Content" />
