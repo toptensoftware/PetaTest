@@ -23,11 +23,11 @@ PetaTest is tiny but powerful, embeddable, dependency free [Unit Testing](http:/
 
 * [Download](Doc/download.md)
 * [Screen Shots](Doc/screenshots.md)
-* [Sample Report (Pass)](Docs/unittest.html)
-* [Sample Report (Fail)](Docs/sample_exception.html)
-* [Getting Started](Docs/getting_started.md)
-* [Writing Tests](Docs/writing_tests.md)
-* [Running Tests](Docs/running_tests.md)
-* [Support](Docs/support.md)
-* [License](Docs/license.md)
+* [Sample Report (Pass)](Doc/unittest.html)
+* [Sample Report (Fail)](Doc/sample_exception.html)
+* [Getting Started](Doc/getting_started.md)
+* [Writing Tests](Doc/writing_tests.md)
+* [Running Tests](Doc/running_tests.md)
+* [Support](Doc/support.md)
+* [License](Doc/license.md)
 
