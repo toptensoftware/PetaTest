@@ -23,8 +23,8 @@ PetaTest is tiny but powerful, embeddable, dependency free [Unit Testing](http:/
 
 * [Download](Doc/download.md)
 * [Screen Shots](Doc/screenshots.md)
-* [Sample Report (Pass)](Doc/unittest.html)
-* [Sample Report (Fail)](Doc/sample_exception.html)
+* [Sample Report (Pass)](http://htmlpreview.github.io/?https://github.com/toptensoftware/PetaTest/blob/master/Doc/unittest.html)
+* [Sample Report (Fail)](http://htmlpreview.github.io/?https://github.com/toptensoftware/PetaTest/blob/master/Doc/sample_exception.html)
 * [Getting Started](Doc/getting_started.md)
 * [Writing Tests](Doc/writing_tests.md)
 * [Running Tests](Doc/running_tests.md)
