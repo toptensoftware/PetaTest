@@ -19,5 +19,15 @@ PetaTest is tiny but powerful, embeddable, dependency free [Unit Testing](http:/
 * HTML Output - can generate a nice self-contained single file HTML report
 * Sort of compatible with NUnit's assertion model (but not constraints)
 
+## More Information
 
-See here - <http://www.toptensoftware.com/petatest> - for full details.
+* [Download](Doc/download.md)
+* [Screen Shots](Doc/screenshots.md)
+* [Sample Report (Pass)](Docs/unittest.html)
+* [Sample Report (Fail)](Docs/sample_exception.html)
+* [Getting Started](Docs/getting_started.md)
+* [Writing Tests](Docs/writing_tests.md)
+* [Running Tests](Docs/running_tests.md)
+* [Support](Docs/support.md)
+* [License](Docs/license.md)
+

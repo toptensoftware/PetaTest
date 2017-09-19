@@ -1,0 +1,678 @@
+<html>
+<head>
+<style>
+body { font-family:Arial; margin:20px; font-size:10pt}
+div.assembly>div.title { font-size:20pt; margin-bottom:20px; border-bottom:1px solid silver; padding-bottom:20px; }
+div.testfixture>div.title { font-size:16pt; }
+div.testfixture { margin-bottom:20px; }
+div.test { margin-left:20px; }
+div.test div.title { font-size:12pt; }
+div.errormessage { color:Red; padding-top:10px; }
+div.pass>div.title { color:#808080; }
+span.highlighted { color:Red; }
+pre.code { background-color:#f0f0f0; }
+div.summary { border:1px solid silver; padding:10px; margin-bottom:20px; text-align:center; }
+div.fail div.summary { background-color:Red; color:White; }
+div.pass div.summary { background-color:Lime; }
+div.collapsed div.content { display:none; }
+div.test div.content { border-left:2px solid #d0d0d0; padding-left:10px; margin-left:10px; }
+a { text-decoration:none; color:#606060; }
+a:hover { color:orange; }
+div>div.title>span.indicator { display:inline-block; width:10px; height:10px; background-color:lime; border-radius:7px}
+div.fail>div.title>span.indicator { display:inline-block; width:10px; height:10px; background-color:red; }
+div.assembly>div.title>span.indicator { display:none; }
+div.misc_info { color:#808080; }
+</style>
+<script>
+window.addEventListener("load", setup, false);
+function setup() {
+    var divs = document.getElementsByClassName("toggle");
+    for (var i = 0; i < divs.length; i++) {
+        divs[i].onclick = function () {
+            var top = this.parentNode.parentNode;
+            if (top.className.indexOf(" collapsed") < 0)
+                top.className += " collapsed";
+            else
+                top.className = top.className.replace(" collapsed", "");
+            return false;
+        }
+    }
+}
+</script>
+</head>
+<body>
+<div class="assembly pass">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+Test Results for PetaTest.exe
+</a>
+
+</div>
+<div class="summary">
+Passed: 35 Failed: 0 Warnings: 0 Time in Test Cases: 68ms
+</div>
+<div class="content">
+<div class="testfixture pass">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+Test Fixture PetaTest.AssertionTests()
+</a>
+
+</div>
+<div class="content">
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreEqual_sbyte()
+</a>
+ <small>6ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreEqual_byte()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreEqual_short()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreEqual_ushort()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreEqual_int()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreEqual_uint()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreEqual_long()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreEqual_ulong()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreEqual_float()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreEqual_double()
+</a>
+ <small>2ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreEqual_double_within()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreEqual_decimal()
+</a>
+ <small>2ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreEqual_string()
+</a>
+ <small>2ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreEqual_dates()
+</a>
+ <small>16ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+IsTrue()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+IsNull()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreSame()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+IsEmpty_String()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+IsNullOrEmpty_String()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+IsEmpty_Collection()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+Contains_Collection()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+Contains_String()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+Greater()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+GreaterOrEqual()
+</a>
+ <small>0ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+Less()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+LessOrEqual()
+</a>
+ <small>0ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+IsInstanceOf()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+IsAssignableFrom()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+IsAssignableTo()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AllItemsAreUnique()
+</a>
+ <small>4ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AllItemsAreNotNull()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AllItemsAreEqual()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AllItemsAreInstancesOf()
+</a>
+ <small>1ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+IsSubsetOf()
+</a>
+ <small>7ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+<div class="test pass collapsed">
+<div class="title">
+<span class="indicator">
+
+</span>
+<a class="toggle" href="#">
+AreEquivalent()
+</a>
+ <small>4ms</small>
+</div>
+<div class="content">
+<pre>Test passed!
+</pre>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="misc_info">
+Time in test cases 68ms, setup/teardown 0ms, test framework 70ms<br/>Tests run at 31-Jul-11 10:09:51 PM by bradr on MACBOOK under Microsoft Windows NT 6.1.7600.0<br/>Command line: c:\b\dev\source\PetaTest\PetaTest\bin\Release\PetaTest.exe /out:..\..\unittest.html
+</div>
+
+</body>
+
+</html>
