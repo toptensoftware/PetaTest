@@ -613,11 +613,12 @@ namespace PetaTest
 			Console.SetOut(old);
 			totalTime.Stop();
 
-			Output.Complete(_statsStack.Pop(), _otherTimes.ElapsedMilliseconds, totalTime.ElapsedMilliseconds);
+			var stats = _statsStack.Pop();
+			Output.Complete(stats, _otherTimes.ElapsedMilliseconds, totalTime.ElapsedMilliseconds);
 
 			if (dirtyexit ?? true)
 				System.Diagnostics.Process.GetCurrentProcess().Kill();
-			return 0;
+			return stats.Errors;
 		}
 
 		// Helper to create instances of test fixtures
@@ -1369,17 +1370,17 @@ div.misc_info { color:#808080; }
 <script>
 window.addEventListener(""load"", setup, false);
 function setup() {
-    var divs = document.getElementsByClassName(""toggle"");
-    for (var i = 0; i < divs.length; i++) {
-        divs[i].onclick = function () {
-            var top = this.parentNode.parentNode;
-            if (top.className.indexOf("" collapsed"") < 0)
-                top.className += "" collapsed"";
-            else
-                top.className = top.className.replace("" collapsed"", """");
-            return false;
-        }
-    }
+	var divs = document.getElementsByClassName(""toggle"");
+	for (var i = 0; i < divs.length; i++) {
+		divs[i].onclick = function () {
+			var top = this.parentNode.parentNode;
+			if (top.className.indexOf("" collapsed"") < 0)
+				top.className += "" collapsed"";
+			else
+				top.className = top.className.replace("" collapsed"", """");
+			return false;
+		}
+	}
 }
 </script>";
 	}
